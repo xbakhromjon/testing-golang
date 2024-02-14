@@ -5,6 +5,8 @@ import (
 	"github.com/Masterminds/squirrel"
 	"github.com/jackc/pgx/v5"
 	"integration-test/internal/domain/card"
+	"log"
+	"os"
 )
 
 type postgresRepository struct {
@@ -51,8 +53,11 @@ func (p *postgresRepository) FindOne(ctx context.Context, ID string) (*card.Card
 }
 
 func NewPostgresConnection() (*pgx.Conn, error) {
-	connStr := "host=localhost port=5432 user=postgres password=123 dbname=test sslmode=disable"
-	conn, err := pgx.Connect(context.Background(), connStr)
+	val, ok := os.LookupEnv("DATABASE_URL")
+	if !ok {
+		log.Fatal("database url not exists")
+	}
+	conn, err := pgx.Connect(context.Background(), val)
 	if err != nil {
 		return nil, err
 	}

@@ -103,3 +103,5 @@ fabric.properties
 /.idea/.gitignore
 /.idea/integration-test.iml
 /.idea/modules.xml
+
+.env
